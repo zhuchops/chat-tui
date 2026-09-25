@@ -64,7 +64,7 @@ export default function RegisterPage({ setScreen }: RegisterPageProps) {
   return (
     <Box flexDirection="column">
       <Box>
-        <Text>Register</Text>
+        <Text bold>REGISTER</Text>
       </Box>
 
       <Box flexDirection="column">

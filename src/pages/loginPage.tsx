@@ -1,11 +1,10 @@
 import { useContext, useState } from 'react'
-import { treaty } from "@elysia/eden"
-import type { Backend } from "@chat/chat-back"
 import { NotificationsContext } from "../contexts/notificaitonsContext"
 import { useAuth } from "../contexts/authContext"
 import type { UnauthScreen } from "../routers/unauthenticatedRouter"
 import { Box, Text, useInput } from "ink"
 import TextInput from "ink-text-input"
+import { api } from '../api'
 
 type LoginPageProps = {
   setScreen: React.Dispatch<React.SetStateAction<UnauthScreen>>
@@ -14,13 +13,12 @@ type LoginPageProps = {
 export default function LoginPage({ setScreen }: LoginPageProps) {
   const auth = useAuth()
   const notificationCtx = useContext(NotificationsContext)
-  const backend = treaty<Backend>('localhost:8080')
   const [focused, setFocused] = useState(0)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   async function login() {
-    const res = await backend.auth.login.post({ email: email, password: password })
+    const res = await api.auth.login.post({ email: email, password: password })
     if (res.error) {
       if (res.error.status == 401) {
         notificationCtx?.push({ type: 'error', content: 'Bad credentials' })
@@ -59,7 +57,7 @@ export default function LoginPage({ setScreen }: LoginPageProps) {
   return (
     <Box flexDirection="column">
       <Box>
-        <Text>Login</Text>
+        <Text bold>LOGIN</Text>
       </Box>
 
       <Box flexDirection="column">

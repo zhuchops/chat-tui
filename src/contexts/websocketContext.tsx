@@ -122,3 +122,11 @@ export default function WebsocketProvider({ children }: { children: ReactNode })
 
   return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>
 }
+
+export function useWsMessages(handler: Listener) {
+  const { subscribe } = useWebsocket()
+  const handlerRef = useRef(handler)
+  handlerRef.current = handler
+
+  useEffect(() => subscribe((msg) => handlerRef.current(msg)), [subscribe])
+}
