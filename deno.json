@@ -1,0 +1,23 @@
+{
+  "name": "@chat/tui-frontend",
+  "version": "0.1.0",
+  "exports": "./index.ts",
+  "tasks": {
+    "start": "deno run -A index.ts",
+    "dev": "deno run -A --watch index.ts"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "jsxImportSourceTypes": "@types/react"
+  },
+  "imports": {
+    "@types/react": "npm:@types/react@^19.3.0",
+    "hono": "npm:hono@^4.13.11",
+    "ink": "npm:ink@^7.1.1",
+    "ink-scroll-view": "npm:ink-scroll-view@^0.4.0",
+    "ink-text-input": "npm:ink-text-input@^6.0.0",
+    "react": "npm:react@^19.3.0",
+    "zod": "npm:zod@^4.6.5"
+  }
+}

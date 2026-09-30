@@ -1,58 +1,69 @@
-import { useContext, useState } from 'react'
-import { NotificationsContext } from "../contexts/notificaitonsContext"
-import { useAuth } from "../contexts/authContext"
-import type { UnauthScreen } from "../routers/unauthenticatedRouter"
-import { Box, Text, useInput } from "ink"
-import TextInput from "ink-text-input"
-import { api } from '../api'
+import { useContext, useState } from "react";
+import { NotificationsContext } from "../contexts/notificaitonsContext.tsx";
+import { useAuth } from "../contexts/authContext.tsx";
+import type { UnauthScreen } from "../routers/unauthenticatedRouter.tsx";
+import { Box, Text, useInput } from "ink";
+import TextInput from "ink-text-input";
+import { api } from "../api.ts";
 
 type LoginPageProps = {
-  setScreen: React.Dispatch<React.SetStateAction<UnauthScreen>>
-}
+  setScreen: React.Dispatch<React.SetStateAction<UnauthScreen>>;
+};
 
 export default function LoginPage({ setScreen }: LoginPageProps) {
-  const auth = useAuth()
-  const notificationCtx = useContext(NotificationsContext)
-  const [focused, setFocused] = useState(0)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const auth = useAuth();
+  const notificationCtx = useContext(NotificationsContext);
+  const [focused, setFocused] = useState(0);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   async function login() {
-    const res = await api.auth.login.post({ email: email, password: password })
-    if (res.error) {
-      if (res.error.status == 401) {
-        notificationCtx?.push({ type: 'error', content: 'Bad credentials' })
-        return
+    const res = await api.auth.login.$post({
+      json: { email: email, password: password },
+    });
+    if (!res.ok) {
+      if (res.status == 401) {
+        notificationCtx?.push({ type: "error", content: "Bad credentials" });
+        return;
       }
-      if (res.error.status == 422) {
-        if (res.error.value.title === 'Validation Error') {
-          notificationCtx?.push({ type: 'error', content: 'Bad request' })
-          return
-        }
+      if (res.status == 400) {
+        notificationCtx?.push({ type: "error", content: "Bad request" });
+        return;
       }
-      notificationCtx?.push({ type: 'error', content: 'Unexpected error. Try again' })
-      return
+      notificationCtx?.push({
+        type: "error",
+        content: "Unexpected error. Try again",
+      });
+      return;
     }
-    const data = res.data
-    auth.login({ id: data?.user.id!, username: data?.user.username!, email: data?.user.email!, }, data?.accessToken!, data?.refreshToken!)
-    notificationCtx?.push({ type: 'message', content: 'Logged in successful' })
+    const data = await res.json();
+    auth.login(
+      {
+        id: data?.user.id!,
+        username: data?.user.username!,
+        email: data?.user.email!,
+      },
+      data?.accessToken!,
+      data?.refreshToken!,
+    );
+    notificationCtx?.push({ type: "message", content: "Logged in successful" });
   }
 
   // keyboard
-  useInput(async (input, key) => {
+  useInput(async (_input, key) => {
     if (key.tab && key.shift) {
-      setFocused((prev) => (prev + 3 - 1) % 3)
+      setFocused((prev) => (prev + 3 - 1) % 3);
     } else if (key.tab) {
-      setFocused((prev) => (prev + 1) % 3)
+      setFocused((prev) => (prev + 1) % 3);
     }
     if (key.return) {
       if (focused == 2) {
-        setScreen('register')
+        setScreen("register");
       } else {
-        await login()
+        await login();
       }
     }
-  })
+  });
 
   return (
     <Box flexDirection="column">
@@ -62,7 +73,7 @@ export default function LoginPage({ setScreen }: LoginPageProps) {
 
       <Box flexDirection="column">
         <Box flexDirection="row">
-          <Text>{focused === 0 ? '> ' : ''}</Text>
+          <Text>{focused === 0 ? "> " : ""}</Text>
           <TextInput
             focus={focused === 0}
             value={email}
@@ -72,7 +83,7 @@ export default function LoginPage({ setScreen }: LoginPageProps) {
         </Box>
 
         <Box flexDirection="row">
-          <Text>{focused === 1 ? '> ' : ''}</Text>
+          <Text>{focused === 1 ? "> " : ""}</Text>
           <TextInput
             focus={focused === 1}
             value={password}
@@ -84,7 +95,7 @@ export default function LoginPage({ setScreen }: LoginPageProps) {
 
         <Box>
           <Text>
-            {focused === 2 ? <Text bold>Register HERE</Text> : 'Register HERE'}
+            {focused === 2 ? <Text bold>Register HERE</Text> : "Register HERE"}
           </Text>
         </Box>
       </Box>
@@ -101,5 +112,5 @@ export default function LoginPage({ setScreen }: LoginPageProps) {
         </Box>
       </Box>
     </Box>
-  )
+  );
 }

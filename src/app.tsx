@@ -1,6 +1,6 @@
-import { AuthProvider } from "./contexts/authContext";
-import { NotificationProvider } from "./contexts/notificaitonsContext";
-import AppRouter from "./routers/router";
+import { AuthProvider } from "./contexts/authContext.tsx";
+import { NotificationProvider } from "./contexts/notificaitonsContext.tsx";
+import AppRouter from "./routers/router.tsx";
 import { Text } from "ink";
 
 export default function App() {
@@ -10,5 +10,5 @@ export default function App() {
         <AppRouter />
       </AuthProvider>
     </NotificationProvider>
-  )
+  );
 }

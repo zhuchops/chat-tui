@@ -1,5 +1,5 @@
 import type { Backend } from "@chat/chat-back";
-import { treaty } from "@elysia/eden";
-import { BACKEND_URL } from "./consts";
+import { hc } from "hono/client";
+import { BACKEND_URL } from "./consts.ts";
 
-export const api = treaty<Backend>(BACKEND_URL)
+export const api = hc<Backend>(BACKEND_URL);

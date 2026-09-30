@@ -1,21 +1,21 @@
-import { Box, Text, useInput } from "ink"
-import { useAuth } from "../contexts/authContext"
-import type { AuthScreen } from "../routers/authenticatedRouter"
+import { Box, Text, useInput } from "ink";
+import { useAuth } from "../contexts/authContext.tsx";
+import type { AuthScreen } from "../routers/authenticatedRouter.tsx";
 
 type ProfilePageProps = {
-  setScreen: React.Dispatch<React.SetStateAction<AuthScreen>>
-}
+  setScreen: React.Dispatch<React.SetStateAction<AuthScreen>>;
+};
 
 export default function ProfilePage({ setScreen }: ProfilePageProps) {
-  const auth = useAuth()
+  const auth = useAuth();
 
   // keyboard (also keeps stdin open, otherwise the process exits after first render)
   useInput(async (input, key) => {
-    if (input === 'l') {
-      await auth.logout()
+    if (input === "l") {
+      await auth.logout();
     }
-    if (key.escape) setScreen('dashboard')
-  })
+    if (key.escape) setScreen("dashboard");
+  });
 
   return (
     <Box flexDirection="column">
@@ -37,5 +37,5 @@ export default function ProfilePage({ setScreen }: ProfilePageProps) {
         </Box>
       </Box>
     </Box>
-  )
+  );
 }

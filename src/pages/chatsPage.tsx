@@ -1,20 +1,20 @@
 import { Box, Text, useInput } from "ink";
-import type { AuthScreen } from "../routers/authenticatedRouter";
+import type { AuthScreen } from "../routers/authenticatedRouter.tsx";
 import { ScrollView, type ScrollViewRef } from "ink-scroll-view";
 import { useRef } from "react";
 
 type ChatsPageProps = {
-  setScreen: React.Dispatch<React.SetStateAction<AuthScreen>>
-}
+  setScreen: React.Dispatch<React.SetStateAction<AuthScreen>>;
+};
 
 export default function ChatsPage({ setScreen }: ChatsPageProps) {
-  const scrollViewRef = useRef<ScrollViewRef>(null)
+  const scrollViewRef = useRef<ScrollViewRef>(null);
 
-  useInput((input, key) => {
-    if (key.upArrow) scrollViewRef.current?.scrollBy(-1)
-    if (key.downArrow) scrollViewRef.current?.scrollBy(1)
-    if (key.escape) setScreen('dashboard')
-  })
+  useInput((_input, key) => {
+    if (key.upArrow) scrollViewRef.current?.scrollBy(-1);
+    if (key.downArrow) scrollViewRef.current?.scrollBy(1);
+    if (key.escape) setScreen("dashboard");
+  });
 
   return (
     <Box flexDirection="column">
@@ -40,5 +40,5 @@ export default function ChatsPage({ setScreen }: ChatsPageProps) {
         </Box>
       </Box>
     </Box>
-  )
+  );
 }
