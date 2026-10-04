@@ -1,7 +1,7 @@
 import { AuthProvider } from "./contexts/authContext.tsx";
 import { NotificationProvider } from "./contexts/notificaitonsContext.tsx";
 import AppRouter from "./routers/router.tsx";
-import { Text } from "ink";
+import { Box, Text } from "ink";
 
 export default function App() {
   return (

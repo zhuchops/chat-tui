@@ -18,13 +18,13 @@ export default function DashboardPage({ setScreen }: DashboardPageProps) {
     if (key.return) {
       switch (focused) {
         case 0:
-          setScreen("profile");
+          setScreen({ screen: "profile" });
           break;
         case 1:
-          setScreen("chats");
+          setScreen({ screen: "chats" });
           break;
         case 2:
-          setScreen("settings");
+          setScreen({ screen: "settings" });
           break;
       }
     }
@@ -42,6 +42,22 @@ export default function DashboardPage({ setScreen }: DashboardPageProps) {
       <Text>
         {focused === 2 ? <Text bold>Settings</Text> : "Settings"}
       </Text>
+
+      {/*footer*/}
+      <Box flexDirection="column">
+        <Box>
+          <Text>&lt;tab\shift + tab&gt; Move focus</Text>
+        </Box>
+        <Box>
+          <Text>&lt;enter&gt; Choose chat</Text>
+        </Box>
+        <Box>
+          <Text>&lt;Escape&gt; Go back</Text>
+        </Box>
+        <Box>
+          <Text>&lt;Ctrl + C&gt; Exit</Text>
+        </Box>
+      </Box>
     </Box>
   );
 }

@@ -15,10 +15,10 @@ type Chat = {
   title: string;
 };
 
-export default function ChatsPage({ setScreen }: ChatsPageProps) {
+export default function FriendsPage({ setScreen }: ChatsPageProps) {
   const scrollViewRef = useRef<ScrollViewRef>(null);
   const [loading, setLoading] = useState(true);
-  const [chats, setChats] = useState<Chat[]>([]);
+  const [friends, setChats] = useState<Chat[]>([]);
   const notifications = useNotifications();
 
   useInput((_input, key) => {
@@ -62,11 +62,11 @@ export default function ChatsPage({ setScreen }: ChatsPageProps) {
   return (
     <Box flexDirection="column">
       {/*Title*/}
-      <Text bold>CHATS</Text>
+      <Text bold>FRIENDS</Text>
 
       {/*scrollable chats*/}
       <ScrollView ref={scrollViewRef}>
-        {chats.map((chat) => {
+        {friends.map((chat) => {
           return (
             <Box>
               <Text>{chat.title}</Text>
@@ -81,7 +81,7 @@ export default function ChatsPage({ setScreen }: ChatsPageProps) {
           <Text>&lt;tab\shift + tab&gt; Move focus</Text>
         </Box>
         <Box>
-          <Text>&lt;n&gt; New chat</Text>
+          <Text>&lt;n&gt; New friend</Text>
         </Box>
         <Box>
           <Text>&lt;enter&gt; Confirm</Text>

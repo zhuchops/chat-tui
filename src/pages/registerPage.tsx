@@ -1,12 +1,10 @@
-import type { Backend } from "@chat/chat-back";
-import { hc } from "hono/client";
 import { Box, Text, useInput } from "ink";
 import TextInput from "ink-text-input";
 import { useContext, useState } from "react";
 import { useAuth } from "../contexts/authContext.tsx";
 import { NotificationsContext } from "../contexts/notificaitonsContext.tsx";
 import type { UnauthScreen } from "../routers/unauthenticatedRouter.tsx";
-import { BACKEND_URL } from "../consts.ts";
+import { api } from "../api.ts";
 
 type RegisterPageProps = {
   setScreen: React.Dispatch<React.SetStateAction<UnauthScreen>>;
@@ -15,7 +13,6 @@ type RegisterPageProps = {
 export default function RegisterPage({ setScreen }: RegisterPageProps) {
   const auth = useAuth();
   const notificationCtx = useContext(NotificationsContext);
-  const backend = hc<Backend>(BACKEND_URL);
   const [focused, setFocused] = useState(0);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -23,7 +20,7 @@ export default function RegisterPage({ setScreen }: RegisterPageProps) {
 
   // send login to server
   async function register() {
-    const res = await backend.auth.register.$post({
+    const res = await api.auth.register.$post({
       json: {
         username: username,
         email: email,

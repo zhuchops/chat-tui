@@ -4,12 +4,17 @@ import WebsocketProvider from "../contexts/websocketContext.tsx";
 import ChatsPage from "../pages/chatsPage.tsx";
 import DashboardPage from "../pages/dashboardPage.tsx";
 
-export type AuthScreen = "profile" | "dashboard" | "chats" | "settings";
+export type AuthScreen = {
+  screen: "profile" | "dashboard" | "chats" | "settings";
+} | {
+  screen: "chat";
+  id: number;
+};
 
 export default function AuthenticatedRouter() {
-  const [screen, setScreen] = useState<AuthScreen>("dashboard");
+  const [screen, setScreen] = useState<AuthScreen>({ screen: "dashboard" });
   let Screen: ReactNode = <DashboardPage setScreen={setScreen} />;
-  switch (screen) {
+  switch (screen.screen) {
     case "dashboard":
       Screen = <DashboardPage setScreen={setScreen} />;
       break;

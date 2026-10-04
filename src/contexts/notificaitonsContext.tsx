@@ -1,17 +1,36 @@
-import { createContext, type ReactNode, useCallback, useState } from "react";
+import {
+  createContext,
+  type ReactNode,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import type { NotificationData } from "../partials/notification.tsx";
 import Notification from "../partials/notification.tsx";
 import { Box } from "ink";
 
 type StoredNotification = NotificationData & { id: string };
 
+type NotificationsContextValue = {
+  notifications: StoredNotification[];
+  push: (n: NotificationData) => void;
+  remove: (id: string) => void;
+};
+
 export const NotificationsContext = createContext<
-  {
-    notifications: StoredNotification[];
-    push: (n: NotificationData) => void;
-    remove: (id: string) => void;
-  } | null
+  NotificationsContextValue | null
 >(null);
+
+export function useNotifications() {
+  const ctx = useContext(NotificationsContext);
+  if (!ctx) {
+    throw new Error(
+      "Notifications can be used only inside notifications context",
+    );
+  }
+  return ctx;
+}
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
   const [notifications, setNotifications] = useState<StoredNotification[]>([]);
@@ -28,8 +47,14 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     setTimeout(() => remove(id), ttl);
   }, [remove]);
 
+  const value = useMemo<NotificationsContextValue>(() => ({
+    notifications,
+    push,
+    remove,
+  }), [notifications, push, remove]);
+
   return (
-    <NotificationsContext.Provider value={{ notifications, push, remove }}>
+    <NotificationsContext.Provider value={value}>
       {children}
       <Box
         position="absolute"

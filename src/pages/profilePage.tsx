@@ -14,7 +14,7 @@ export default function ProfilePage({ setScreen }: ProfilePageProps) {
     if (input === "l") {
       await auth.logout();
     }
-    if (key.escape) setScreen("dashboard");
+    if (key.escape) setScreen({ screen: "dashboard" });
   });
 
   return (
